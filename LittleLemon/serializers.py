@@ -39,7 +39,6 @@ class OrderSerializer(serializers.ModelSerializer):
                 menu_item=item.menu_item,
                 quantity=item.quantity,
                 unit_price=item.unit_price,
-                price=item.price
             )
 
         cart_items.delete()

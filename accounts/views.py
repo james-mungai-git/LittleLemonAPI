@@ -67,36 +67,36 @@ class LoginView(generics.GenericAPIView):
             },
             status=status.HTTP_200_OK,
         )
+        
+
 
 @api_view(['POST'])
 @permission_classes([IsAdminUser])
-def managers(request):
-    username = request.data.get('username')
-
-    if not username:
-        return Response(
-            {'message': 'username is required'},
-            status=status.HTTP_400_BAD_REQUEST
-        )
-
-    user = get_object_or_404(User, username=username)
-    managers, created = Group.objects.get_or_create(name='manager')
-
-    if request.method == 'POST':
-        managers.user_set.add(user)
-        return Response(
-            {'message': f'{username} authenticated and added to manager group'},
-            status=status.HTTP_200_OK
-        )
-
-    if request.method == 'DELETE':
-        managers.user_set.remove(user)
-        return Response(
-            {'message': f'{username} removed from the manager group'},
-            status=status.HTTP_200_OK
-        )
-        
-
+def groups(request):
+   username= request.data.get('username')
+   group_name=request.data.get('group name')
+   
+   if not username or not group_name:
+       return Response({'message':'username and group_name are required'},status.HTTP_400_BAD_REQUEST)
+   
+   user=get_object_or_404(User, username=username)
+   group,created =Group.objects.get_or_create(name=group_name)
+   
+   if group_name.lower() == 'manager' and not request.user.is_staff:
+       return Response({'message':'only admins can add/remove users from manager group'})
+   
+   if request.method == 'POST':
+       group.user_set.add(user)
+       return Response({'message':f'{username} has been added to {group_name} group'},status.HTTP_200_OK)
+   
+   elif request.method == 'DELETE':
+       group.user_set.remove(user)
+       return Response({'message':f'{username} has been removed from {group_name} group'},status.HTTP_200_OK)
+   
+   else:
+       return Response({'message':'both user name and group name are required'})   
+   
+   
 @api_view(['GET','DELETE'])
 @permission_classes([IsAdminUser])
 def list_managers(request,pk=None):
@@ -119,33 +119,6 @@ def list_managers(request,pk=None):
     
     
     
-@api_view(['POST'])
-@permission_classes([IsManager])
-def delivery_crew(request):
-    username = request.data.get('username')
-
-    if not username:
-        return Response(
-            {'message': 'username is required'},
-            status=status.HTTP_400_BAD_REQUEST
-        )
-
-    user = get_object_or_404(User, username=username)
-    delivery_crew, created = Group.objects.get_or_create(name='delivery crew')
-
-    if request.method == 'POST':
-        delivery_crew.user_set.add(user)
-        return Response(
-            {'message': f'{username} authenticated and added to delivery crew group'},
-            status=status.HTTP_200_OK
-        )
-
-    if request.method == 'DELETE':
-        delivery_crew.user_set.remove(user)
-        return Response(
-            {'message': f'{username} removed from the delivery crew group'},
-            status=status.HTTP_200_OK
-        )
 
 @api_view(['GET','DELETE'])
 @permission_classes([IsManager])
