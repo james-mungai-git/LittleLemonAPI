@@ -1,4 +1,4 @@
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render,redirect
 from .serializers import (
     RegisterUserSerializer,
     LoginSerializer,
@@ -10,8 +10,11 @@ from rest_framework.response import Response
 from django.contrib.auth.models import User,Group
 from rest_framework.permissions import BasePermission
 from rest_framework.authtoken.models import Token
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import login, authenticate
+from django.contrib import messages
 
-
+        
 class IsManager(BasePermission):
     def has_permission(self, request, view):
         return (
@@ -60,13 +63,7 @@ class LoginView(generics.GenericAPIView):
         user = serializer.validated_data
         token, created = Token.objects.get_or_create(user=user)
 
-        return Response(
-            {
-                "user": RegisterUserSerializer(user).data,
-                "token": token.key,
-            },
-            status=status.HTTP_200_OK,
-        )
+        return render(request,'accounts/login.html')
         
 
 
