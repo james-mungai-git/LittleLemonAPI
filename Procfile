@@ -1,1 +1,1 @@
-web: gunicorn LittleLemonAPI.wsgi
+web: gunicorn LittleLemonAPI.wsgi:application --bind 0.0.0.0:$PORT
