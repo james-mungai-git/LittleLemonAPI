@@ -34,7 +34,7 @@ INSTALLED_APPS = [
     'accounts.apps.AccountsConfig',
     'rest_framework.authtoken',
     'rest_framework',
-    'menu',
+    'menu.apps.MenuConfig',
     'djoser',
 ]
 
@@ -72,16 +72,16 @@ WSGI_APPLICATION = 'LittleLemonAPI.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 if os.environ.get("DATABASE_URL"):
-    # Running on Railway
+    # Running on Render/Supabase
     DATABASES = {
         'default': dj_database_url.parse(
-            os.environ["DATABASE_URL"],
+            os.environ.get("DATABASE_URL"),
             conn_max_age=600,
-            ssl_require=False
+            ssl_require=True   # recommended for Supabase/Postgres
         )
     }
 else:
-    # Running locally
+    # Running locally with SQLite
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
