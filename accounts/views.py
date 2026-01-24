@@ -13,7 +13,11 @@ from rest_framework.authtoken.models import Token
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login, authenticate
 from django.contrib import messages
+# views.py
+from django.http import HttpResponse
 
+def landing(request):
+    return HttpResponse("<h1>Welcome to Little Lemon API</h1><p>Visit /api/docs/ to explore.</p>")
         
 class IsManager(BasePermission):
     def has_permission(self, request, view):
