@@ -4,7 +4,3 @@ djoser
 gunicorn
 psycopg2-binary
 dj-database-url
-
-postgresql://postgres:srwWROxRTzeIrqKoIBzkXDkuXdsCUuDw@postgres.railway.internal:5432/railway
-
-${{ Postgres.DATABASE_URL }}
