@@ -1,0 +1,19 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+gunicorn = "*"
+psycopg2-binary = "*"
+django-restframework = "*"
+django = "*"
+django-filter = "*"
+djangorestframework = "*"
+djoser = "*"
+dj-database-url = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.13"
